@@ -1,8 +1,7 @@
 (import [pyray :as pr])
 
-(defclass Player []
 
-  (setv gravity 10)
+(defclass Player []
 
   (defn --init-- [self pos]
     (setv self.pos pos
@@ -10,23 +9,19 @@
           self.fuel 100
 
           self.floor pos.y
-          self.max-jump-y 100
+          self.max-jump-y 0
           self.jump? False
+          self.rotation 30
+          self.fall-speed 4
+          self.jump-speed 10
           self.weapon-cooldown 10
           self.weapon-cur-cooldown 0
-          self.weapon-ready? True)
-    (setv self.texture (pr.load-texture "assets/gfx/player.png"
-                                        (pr.get-color 0x16ff0b))))
+          self.weapon-ready? True
+          self.texture (pr.load-texture "assets/gfx/player.png"
+                                        pr.WHITE)))
 
   (defn update [self]
-    (when (> self.pos.y self.max-jump-y)
-      (+= self.pos.y 3))
-
-    (when (pr.is-key-down pr.KEY_D)
-      (+= self.pos.x 10))
-
-    (when (pr.is-key-down pr.KEY_A)
-      (-= self.pos.x 10))
+    (+= self.pos.y self.fall-speed)
 
     (when (pr.is-key-down pr.KEY_SPACE)
       (self.fire))
@@ -45,8 +40,10 @@
               self.weapon-ready? True)))
 
   (defn jump [self]
-    (when (< self.pos.y (+ self.floor self.max-jump-y))
-      (-= self.pos.y 5)))
+    (-= self.pos.y self.jump-speed)
+
+    (when (<= self.pos.y 0)
+      (setv self.pos.y 0)))
 
   (defn render [self]
-    (pr.draw-texture-ex self.texture self.pos 0.0 1.0 pr.RAYWHITE)))
+    (pr.draw-texture-ex self.texture self.pos self.rotation 1.0 pr.RAYWHITE)))
