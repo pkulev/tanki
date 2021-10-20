@@ -1,0 +1,4 @@
+*~
+*.spec
+poetry.lock
+.temp

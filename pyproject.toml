@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "tanki"
+version = "0.1.0"
+description = "Dendy tanks inspired survival game."
+authors = ["Pavel Kulyov <kulyov.pavel@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+tanki = "tanki.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+hy = "^0.20.0"
+raylib = "3.7.0.post10"
+
+[tool.poetry.dev-dependencies]
+black = "^21.9b0"
+jedhy = "^1"
+HyREPL = "^0.1.1"
+Nuitka = "^0.6.17"
+pyinstaller = "^4.5.1"
+poetry-exec-plugin = "^0.3.1"
+
+[tool.poetry-exec-plugin.commands]
+test = "echo testing; exit 1"
+pyinstaller = "pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/macos --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --collect-all raylib --collect-all pyray tanki/__main__.py"
+run = "build/macos/thetanki/thetanki"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

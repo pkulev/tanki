@@ -1,0 +1,35 @@
+#+TITLE: Tanki
+
+* Installation
+
+** Development
+
+   #+begin_src bash
+     # install poetry 1.2.0+
+     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 - --preview
+     # install raylib
+     brew install raylib  # or via your favourite package manager
+     # set venv to be in the project root
+     poetry config virtualenvs.in-project true
+     # create venv and install project
+     poetry install
+     # run
+     poetry run tanki
+   #+end_src
+
+* Build
+** Pyinstaller
+   #+begin_src bash
+     poetry exec pyinstaller
+     # run build
+     poetry exec tanki
+   #+end_src
+* Controls
+  |---------+--------------|
+  | Binding | Action       |
+  |---------+--------------|
+  | A       | go left      |
+  | D       | go right     |
+  | LSHIFT  | jump engine  |
+  | SPACE   | Alpha strike |
+  |---------+--------------|
