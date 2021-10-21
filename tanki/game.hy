@@ -44,7 +44,6 @@
       (when (pr.is-key-released pr.KEY_P)
         (self.level.toggle-pause))
 
-      (when (or (> self.level.player.pos.y *height*)
-                (pr.is-key-released pr.KEY_R))
+      (when (pr.is-key-released pr.KEY_R)
         (self.restart-level)))
     (pr.close-window)))

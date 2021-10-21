@@ -13,6 +13,11 @@
           self.midround (pr.load-texture f"assets/gfx/midground-{name}.png")
           self.foreground (pr.load-texture f"assets/gfx/foreground-{name}.png")))
 
+  (defn reset [self]
+    (setv self.scrolling-back 0.0
+          self.scrolling-mid 0.0
+          self.scrolling-fore 0.0))
+
   (defn update [self]
     (-= self.scrolling-back 0.1)
     (-= self.scrolling-mid 0.5)

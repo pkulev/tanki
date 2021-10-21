@@ -7,26 +7,32 @@
 
   (defn --init-- [self pos]
     (setv self.pos pos
+          self.-start-pos (pr.Vector2 pos.x pos.y)
 
-          self.fuel 100
-          self.booster 1
-          self.booster-max 3
-
-          self.floor pos.y
-          self.max-jump-y 0
-          self.jump? False
           self.rotation 0
           self.fall-speed 4
           self.jump-speed 10
           self.weapon-cooldown 10
-          self.weapon-cur-cooldown 0
-          self.weapon-ready? True
           self.texture (pr.load-texture "assets/gfx/player.png"
                                         pr.WHITE)
           self.collision-rect (pr.Rectangle (+ pos.x 10)
                                             (+ pos.y 10)
                                             (- self.texture.width 15)
-                                            (- self.texture.height 20))))
+                                            (- self.texture.height 20)))
+    (self.reset))
+
+  (defn reset [self]
+    (setv self.pos (pr.Vector2 self.-start-pos.x self.-start-pos.y)
+          self.fuel 100
+          self.booster 1
+          self.booster-max 3
+          self.weapon-cur-cooldown 0
+          self.weapon-ready? True)
+    (self.adjust-collider))
+
+  (defn adjust-collider [self]
+    (setv self.collision-rect.x (+ self.pos.x 10)
+          self.collision-rect.y (+ self.pos.y 10)))
 
   (defn update [self]
     (+= self.pos.y self.fall-speed)
@@ -37,8 +43,7 @@
     (when (pr.is-key-down pr.KEY_LEFT_SHIFT)
       (self.jump))
 
-    (setv self.collision-rect.x (+ self.pos.x 10)
-          self.collision-rect.y (+ self.pos.y 10)))
+    (self.adjust-collider))
 
   (defn fire [self]
     (when self.weapon-ready?

@@ -25,12 +25,13 @@
      poetry exec tanki
    #+end_src
 * Controls
-  |---------+--------------|
-  | Binding | Action       |
-  |---------+--------------|
-  | LSHIFT  | jump engine  |
-  | SPACE   | Alpha strike |
-  | ESCAPE  | Exit game    |
-  | P       | Toggle pause |
-  | D       | Toggle debug |
-  |---------+--------------|
+  |---------+---------------|
+  | Binding | Action        |
+  |---------+---------------|
+  | LSHIFT  | jump engine   |
+  | SPACE   | Alpha strike  |
+  | ESCAPE  | Exit game     |
+  | P       | Toggle pause  |
+  | D       | Toggle debug  |
+  | R       | Restart level |
+  |---------+---------------|
