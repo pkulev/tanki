@@ -28,8 +28,9 @@
   |---------+--------------|
   | Binding | Action       |
   |---------+--------------|
-  | A       | go left      |
-  | D       | go right     |
   | LSHIFT  | jump engine  |
   | SPACE   | Alpha strike |
+  | ESCAPE  | Exit game    |
+  | P       | Toggle pause |
+  | D       | Toggle debug |
   |---------+--------------|
