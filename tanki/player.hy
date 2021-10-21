@@ -7,6 +7,8 @@
     (setv self.pos pos
 
           self.fuel 100
+          self.booster 1
+          self.booster-max 3
 
           self.floor pos.y
           self.max-jump-y 0
