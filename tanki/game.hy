@@ -1,6 +1,7 @@
 (import [pyray :as pr])
 
-(import [tanki.background [Background]]
+(import [tanki [common]]
+        [tanki.background [Background]]
         [tanki.common [*width* *height*]]
         [tanki.level [Level]]
         [tanki.player [Player]])
@@ -32,6 +33,9 @@
 
       (pr.draw-fps 940 0)
       (pr.end-drawing)
+
+      (when (pr.is-key-released pr.KEY_D)
+        (setv common.*debug* (not common.*debug*)))
 
       (when (pr.is-key-released pr.KEY_P)
         (self.level.toggle-pause))
