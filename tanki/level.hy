@@ -4,6 +4,7 @@
 
 (import [tanki.background [Background]]
         [tanki.common [*width* *height*]]
+        [tanki.obstacles [Obstacle]]
         [tanki.player [Player]])
 
 
@@ -48,14 +49,15 @@
   (defn --init-- [self name]
     (setv self.name name
           self.bg (Background name)
-          self.player (Player (pr.Vector2 50 500))
+          self.player (Player (pr.Vector2 100 500))
           self.paused? False
           self.prepare-sec 3
           self.prepare-left self.prepare-sec
           self.prepare-countdown (TextCountdown (, (, 0.4 "3")
                                                    (, 0.8 "2")
                                                    (, 1.2 "1")
-                                                   (, 1.6 "GO")))))
+                                                   (, 1.6 "GO")))
+          self.obstacles [(Obstacle (pr.Vector2 700 300))]))
 
   (defn toggle-pause [self]
     (setv self.paused? (not self.paused?)))
@@ -66,10 +68,19 @@
 
     (unless (or (not self.prepare-countdown.done?) self.paused?)
       (self.bg.update)
-      (self.player.update)))
+      (for [obstacle self.obstacles]
+        (obstacle.update))
+      (self.player.update)
+
+      (for [obstacle self.obstacles]
+        (when (pr.check-collision-recs self.player.collision-rect
+                                       obstacle.collision-rect)
+          (print "BAM!")))))
 
   (defn render [self]
     (self.bg.render)
+    (for [obstacle self.obstacles]
+      (obstacle.render))
     (self.player.render)
     (self.prepare-countdown.render)
 

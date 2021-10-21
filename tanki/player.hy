@@ -1,5 +1,7 @@
 (import [pyray :as pr])
 
+(import [tanki [common]])
+
 
 (defclass Player []
 
@@ -13,14 +15,18 @@
           self.floor pos.y
           self.max-jump-y 0
           self.jump? False
-          self.rotation 30
+          self.rotation 0
           self.fall-speed 4
           self.jump-speed 10
           self.weapon-cooldown 10
           self.weapon-cur-cooldown 0
           self.weapon-ready? True
           self.texture (pr.load-texture "assets/gfx/player.png"
-                                        pr.WHITE)))
+                                        pr.WHITE)
+          self.collision-rect (pr.Rectangle (+ pos.x 10)
+                                            (+ pos.y 10)
+                                            (- self.texture.width 15)
+                                            (- self.texture.height 20))))
 
   (defn update [self]
     (+= self.pos.y self.fall-speed)
@@ -29,7 +35,10 @@
       (self.fire))
 
     (when (pr.is-key-down pr.KEY_LEFT_SHIFT)
-      (self.jump)))
+      (self.jump))
+
+    (setv self.collision-rect.x (+ self.pos.x 10)
+          self.collision-rect.y (+ self.pos.y 10)))
 
   (defn fire [self]
     (when self.weapon-ready?
@@ -48,4 +57,7 @@
       (setv self.pos.y 0)))
 
   (defn render [self]
-    (pr.draw-texture-ex self.texture self.pos self.rotation 1.0 pr.RAYWHITE)))
+    (pr.draw-texture-ex self.texture self.pos self.rotation 1.0 pr.RAYWHITE)
+
+    (when common.*debug*
+      (pr.draw-rectangle-lines-ex self.collision-rect 1 pr.RED))))

@@ -22,7 +22,7 @@ pyinstaller = "^4.5.1"
 poetry-exec-plugin = "^0.3.1"
 
 [tool.poetry-exec-plugin.commands]
-pyinstaller = "pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/macos --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --collect-all raylib --collect-all pyray tanki/__main__.py"
+pyinstaller = "pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/macos --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --collect-all raylib --collect-all pyray tanki/__main__.py"
 run = "build/macos/thetanki/thetanki"
 
 [build-system]
