@@ -33,6 +33,9 @@
       (pr.draw-text f"Booster: {self.level.player.booster}/{self.level.player.booster-max}" 100 0 20 pr.LIME)
 
       (pr.draw-fps 940 0)
+      (when common.*debug*
+        (pr.draw-line (// *width* 2) 0 (// *width* 2) *height* pr.RED)
+        (pr.draw-line 0 (// *height* 2) *width* (// *height* 2) pr.GREEN))
       (pr.end-drawing)
 
       (when (pr.is-key-released pr.KEY_D)
