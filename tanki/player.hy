@@ -3,6 +3,23 @@
 (import [tanki [common]])
 
 
+(defclass JetpackSound []
+
+  (defn --init-- [self]
+    (setv self.sound (pr.load-music-stream "assets/snd/jetpack1.wav"))
+    (pr.set-music-volume self.sound 0.5)
+    (pr.play-music-stream self.sound))
+
+  (defn pause [self]
+    (pr.pause-music-stream self.sound))
+
+  (defn resume [self]
+    (pr.resume-music-stream self.sound))
+
+  (defn update [self]
+    (pr.update-music-stream self.sound)))
+
+
 (defclass Player []
 
   (defn --init-- [self pos]
@@ -15,6 +32,7 @@
           self.weapon-cooldown 10
           self.texture (pr.load-texture "assets/gfx/player.png"
                                         pr.WHITE)
+          self.jetpack-sound (JetpackSound)
           self.collision-rect (pr.Rectangle (+ pos.x 10)
                                             (+ pos.y 10)
                                             (- self.texture.width 15)
@@ -43,7 +61,11 @@
     (when (pr.is-key-down pr.KEY_LEFT_SHIFT)
       (self.jump))
 
-    (self.adjust-collider))
+    (when (pr.is-key-released pr.KEY_LEFT_SHIFT)
+      (self.jetpack-sound.pause))
+
+    (self.adjust-collider)
+    (self.jetpack-sound.update))
 
   (defn fire [self]
     (when self.weapon-ready?
@@ -56,6 +78,8 @@
               self.weapon-ready? True)))
 
   (defn jump [self]
+    (self.jetpack-sound.resume)
+
     (-= self.pos.y self.jump-speed)
 
     (when (<= self.pos.y 0)
