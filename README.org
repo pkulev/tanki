@@ -51,6 +51,11 @@ Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and m
   - Sounds
     - Thunder :: [[https://freesound.org/people/Fission9/sounds/581124/][freesound]] ([[https://creativecommons.org/publicdomain/zero/1.0/][Creative Commons 0 License]])
     - Jetpack :: [[https://freesound.org/people/thatjeffcarter/sounds/128075/][freesound]] ([[https://creativecommons.org/licenses/by/3.0/][Attribution License]])
+      I've deleted initial ignition part, modified sound is =jetpack-cut.wav=.
     - Rain :: [[https://freesound.org/people/InspectorJ/sounds/400402/][freesound]] ([[https://creativecommons.org/licenses/by/3.0/][Attribution License]])
 
     Other sounds generated in Bfxr.
+
+* Known bugs
+** While holding =jump engine= button long enough sound restarts with hearable gap.
+   Maybe new function in =raylib= (=SeekMusicStream=) will fix this, but I can't use it in my version.

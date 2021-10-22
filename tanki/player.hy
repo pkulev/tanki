@@ -6,17 +6,29 @@
 (defclass JetpackSound []
 
   (defn --init-- [self]
-    (setv self.sound (pr.load-music-stream "assets/snd/jetpack1.wav"))
+    (setv self.sound (pr.load-music-stream "assets/snd/jetpack-cut.wav")
+          self.length (pr.get-music-time-length self.sound))
     (pr.set-music-volume self.sound 0.5)
-    (pr.play-music-stream self.sound))
+    (pr.play-music-stream self.sound)
+    (self.pause))
 
   (defn pause [self]
+    ;; TODO: SeekMusicStream is new function that doesn't exist in raylib 3.7.0
+    ;; FIXME: so to workaround it we can restart sound in advance
+    (when (>= (pr.get-music-time-played self.sound) (- self.length 0.8))
+      (pr.stop-music-stream self.sound)
+      (pr.play-music-stream self.sound))
     (pr.pause-music-stream self.sound))
 
   (defn resume [self]
     (pr.resume-music-stream self.sound))
 
   (defn update [self]
+    (when (>= (pr.get-music-time-played self.sound) (- self.length 0.1))
+      ;; TODO: SeekMusicStream is new function that doesn't exist in raylib 3.7.0
+      #_(pr.seek-music-stream self.sound 0.0)
+      (pr.stop-music-stream self.sound)
+      (pr.play-music-stream self.sound))
     (pr.update-music-stream self.sound)))
 
 
