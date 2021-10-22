@@ -34,4 +34,5 @@
   | P       | Toggle pause  |
   | D       | Toggle debug  |
   | R       | Restart level |
+  | M       | Toggle music  |
   |---------+---------------|

@@ -25,7 +25,7 @@
 
   (defn run [self]
     (while (not (pr.window-should-close))
-      (unless (pr.is-sound-playing self.music)
+      (when (and common.*music* (not (pr.is-sound-playing self.music)))
         (pr.play-sound self.music))
 
       (self.level.update)
@@ -50,5 +50,11 @@
         (self.level.toggle-pause))
 
       (when (pr.is-key-released pr.KEY_R)
-        (self.restart-level)))
+        (self.restart-level))
+
+      (when (pr.is-key-released pr.KEY_M)
+        (setv common.*music* (not common.*music*))
+        (when (and (not common.*music*)
+                   (pr.is-sound-playing self.music))
+          (pr.stop-sound self.music))))
     (pr.close-window)))

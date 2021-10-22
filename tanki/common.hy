@@ -2,3 +2,4 @@
 (setv [*width* *height*] *resolution*)
 
 (setv *debug* False)
+(setv *music* True)
