@@ -89,10 +89,16 @@
         (obstacle.update))
       (self.player.update)
 
-      (for [obstacle self.obstacles]
-        (when (pr.check-collision-recs self.player.collision-rect
-                                       obstacle.collision-rect)
-          (setv self.game-over? True)))))
+      (when (or (> (+ self.player.pos.y (* self.player.texture.height 2/3)) *height*)
+                (self.collision-with-obstacle))
+        (setv self.game-over? True))))
+
+  (defn collision-with-obstacle [self]
+    ;; TODO: check only closest
+    (for [obstacle self.obstacles]
+      (when (pr.check-collision-recs self.player.collision-rect
+                                     obstacle.collision-rect)
+        (return True))))
 
   (defn render-game-over-lay [self]
     (setv info-w 350
