@@ -18,15 +18,17 @@
 
     (setv self.state :in-game
           self.level (Level (get self.level-names 0))
-          self.music (pr.load-sound "assets/snd/theme.wav")))
+          self.music (pr.load-music-stream "assets/snd/theme.wav")))
 
   (defn restart-level [self]
     (setv self.level (Level self.level.name)))
 
   (defn run [self]
+    (pr.play-music-stream self.music)
     (while (not (pr.window-should-close))
-      (when (and common.*music* (not (pr.is-sound-playing self.music)))
-        (pr.play-sound self.music))
+      (pr.update-music-stream self.music)
+      ;; (when (and common.*music* (not (pr.is-sound-playing self.music)))
+      ;;   (pr.play-sound self.music))
 
       (self.level.update)
 
