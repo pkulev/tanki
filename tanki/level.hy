@@ -59,7 +59,9 @@
                                                    (, 0.8 "2")
                                                    (, 1.2 "1")
                                                    (, 1.6 "GO")))
-          self.obstacles [(Obstacle (pr.Vector2 700 300))]))
+          self.obstacles [(Obstacle (pr.Vector2 700 300))]
+          self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
+    (pr.set-sound-volume self.collision-sound 0.5))
 
   (defn get-max-score [self]
     10)
@@ -98,6 +100,7 @@
     (for [obstacle self.obstacles]
       (when (pr.check-collision-recs self.player.collision-rect
                                      obstacle.collision-rect)
+        (pr.play-sound self.collision-sound)
         (return True))))
 
   (defn render-game-over-lay [self]
