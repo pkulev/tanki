@@ -1,9 +1,12 @@
 #+TITLE: Tanki
 
+Submission for [[https://itch.io/jam/autumn-lisp-game-jam-2021][itch.io]] Autumn Lisp Game Jam
+Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and my bad gamedev skills.
+
 * Installation
 
 ** Development
-
+   Requires =poetry=, raylib and python3.9+.
    #+begin_src bash
      # install poetry 1.2.0+
      curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 - --preview
@@ -15,10 +18,13 @@
      poetry install
      # run
      poetry run tanki
+     # do this if you want to use `poetry exec`
+     poetry plugin add poetry-exec-plugin
    #+end_src
 
 * Build
 ** Pyinstaller
+   Requires =poetry-exec-plugin= (see [[*Development][Development]] section)
    #+begin_src bash
      poetry exec pyinstaller
      # run build
@@ -36,3 +42,15 @@
   | R       | Restart level |
   | M       | Toggle music  |
   |---------+---------------|
+
+* Assets
+  - Graphics
+    Made in Krita.
+  - Music
+    Made in [[https://www.beepbox.co][BeepBox]]
+  - Sounds
+    - Thunder :: [[https://freesound.org/people/Fission9/sounds/581124/][freesound]] ([[https://creativecommons.org/publicdomain/zero/1.0/][Creative Commons 0 License]])
+    - Jetpack :: [[https://freesound.org/people/thatjeffcarter/sounds/128075/][freesound]] ([[https://creativecommons.org/licenses/by/3.0/][Attribution License]])
+    - Rain :: [[https://freesound.org/people/InspectorJ/sounds/400402/][freesound]] ([[https://creativecommons.org/licenses/by/3.0/][Attribution License]])
+
+    Other sounds generated in Bfxr.
