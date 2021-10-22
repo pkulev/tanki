@@ -13,16 +13,21 @@
 
   (defn --init-- [self]
     (pr.init-window *width* *height* "Tanki")
+    (pr.init-audio-device)
     (pr.set-target-fps 60)
 
     (setv self.state :in-game
-          self.level (Level (get self.level-names 0))))
+          self.level (Level (get self.level-names 0))
+          self.music (pr.load-sound "assets/snd/theme.wav")))
 
   (defn restart-level [self]
     (setv self.level (Level self.level.name)))
 
   (defn run [self]
     (while (not (pr.window-should-close))
+      (unless (pr.is-sound-playing self.music)
+        (pr.play-sound self.music))
+
       (self.level.update)
 
       (pr.begin-drawing)
