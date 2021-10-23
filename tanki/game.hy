@@ -36,8 +36,11 @@
       (pr.clear-background pr.RAYWHITE)
       (self.level.render)
 
-      (pr.draw-text f"Fuel: {self.level.player.fuel}" 0 0 20 pr.VIOLET)
-      (pr.draw-text f"Booster: {self.level.player.booster}/{self.level.player.booster-max}" 100 0 20 pr.LIME)
+      ;; (pr.draw-text f"Booster: {self.level.player.booster}/{self.level.player.booster-max}"
+      ;;               200
+      ;;               0
+      ;;               20
+      ;;               pr.LIME)
 
       (pr.draw-fps 940 0)
       (when common.*debug*
