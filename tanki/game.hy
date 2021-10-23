@@ -56,7 +56,7 @@
 
       (when (pr.is-key-released pr.KEY_M)
         (setv common.*music* (not common.*music*))
-        (when (and (not common.*music*)
-                   (pr.is-sound-playing self.music))
-          (pr.stop-sound self.music))))
+        (if common.*music*
+            (pr.play-music-stream self.music)
+            (pr.stop-music-stream self.music))))
     (pr.close-window)))
