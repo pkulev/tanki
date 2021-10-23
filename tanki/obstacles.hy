@@ -34,7 +34,8 @@
 
   (defn --init-- [self top bottom]
     (setv self.top top
-          self.bottom bottom))
+          self.bottom bottom
+          self.checked? False))
 
   (defn set-pos-x [self x]
     (setv self.top.pos.x x

@@ -53,7 +53,7 @@
           self.paused? False
           self.game-over? False
 
-          self.score 4
+          self.score 0
 
           self.prepare-countdown (TextCountdown (, (, 0.4 "3")
                                                    (, 0.8 "2")
@@ -77,7 +77,8 @@
     (self.player.reset)
     (self.prepare-countdown.reset)
     (self.obstacles.reset)
-    (setv self.game-over? False))
+    (setv self.game-over? False
+          self.score 0))
 
   (defn update [self]
     (when self.game-over?
@@ -95,7 +96,20 @@
 
       (when (or (> (+ self.player.pos.y (* self.player.texture.height 2/3)) *height*)
                 (self.collision-with-obstacle))
-        (setv self.game-over? True))))
+        (setv self.game-over? True))
+
+      ;; scores!
+      (for [obstacle self.obstacles.objects]
+        ;; player passed obstacle at 3px
+        (setv diff (- self.player.pos.x (+ (obstacle.get-pos-x) obstacle.bottom.width)))
+        (when (and (< diff 5)
+                   (> diff 0)
+                   (not obstacle.checked?))
+          (+= self.score 1)
+          (setv obstacle.checked? True))
+
+        (when (and (> self.player.pos.x (+ (obstacle.get-pos-x) obstacle.bottom.width 7)))
+          (setv obstacle.checked? False)))))
 
   (defn collision-with-obstacle [self]
     ;; TODO: check only closest
@@ -144,6 +158,20 @@
     (self.obstacles.render)
     (self.player.render)
     (self.prepare-countdown.render)
+
+    (setv size-x (pr.measure-text (str self.score) 36)
+          rect-w 100)
+    (pr.draw-rectangle (int (- (/ *width* 2) (/ rect-w 2)))
+                       2
+                       rect-w
+                       40
+                       (pr.fade pr.DARKGRAY 0.5))
+
+    (pr.draw-text (str self.score)
+                  (int (- (/ *width* 2) (/ size-x 2)))
+                  5
+                  36
+                  pr.RAYWHITE)
 
     (when self.game-over?
       (self.render-game-over-lay))
