@@ -3,3 +3,6 @@
 
 (setv *debug* False)
 (setv *music* True)
+
+(defn clamp [val min-val max-val]
+  (get (sorted [min-val val max-val]) 1))
