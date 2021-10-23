@@ -52,8 +52,10 @@
           self.player (Player (pr.Vector2 100 500))
           self.paused? False
           self.game-over? False
+          self.new-record? False
 
           self.score 0
+          self.max-score 0
 
           self.prepare-countdown (TextCountdown (, (, 0.4 "3")
                                                    (, 0.8 "2")
@@ -64,10 +66,12 @@
           self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
     (pr.set-sound-volume self.collision-sound 0.5))
 
-  (defn set-max-score [self])
+  ;; save to file
+  (defn set-max-score [self score]
+    (setv self.max-score score))
 
   (defn get-max-score [self]
-    10)
+    self.max-score)
 
   (defn toggle-pause [self]
     (setv self.paused? (not self.paused?)))
@@ -78,7 +82,8 @@
     (self.prepare-countdown.reset)
     (self.obstacles.reset)
     (setv self.game-over? False
-          self.score 0))
+          self.score 0
+          self.new-record? False))
 
   (defn update [self]
     (when self.game-over?
@@ -96,7 +101,10 @@
 
       (when (or (> (+ self.player.pos.y (* self.player.texture.height 2/3)) *height*)
                 (self.collision-with-obstacle))
-        (setv self.game-over? True))
+        (setv self.game-over? True)
+        (when (> self.score (self.get-max-score))
+          (self.set-max-score self.score)
+          (setv self.new-record? True)))
 
       ;; scores!
       (for [obstacle self.obstacles.objects]
@@ -126,6 +134,8 @@
           max-score f"Max score: {(self.get-max-score)}"
           score-size-x (pr.measure-text score 20)
           max-score-size-x (pr.measure-text max-score 20)
+          new-record "New record!"
+          new-record-size-x (pr.measure-text new-record 20)
           overlay-rect (pr.Rectangle info-x
                                      info-y
                                      info-w
@@ -142,14 +152,26 @@
                   (+ info-y 50)
                   20
                   pr.RAYWHITE)
+    (when self.new-record?
+      (setv new-record-x (+ (- (// info-w 2) (// new-record-size-x 2)) info-x))
+      (pr.draw-rectangle-lines (- new-record-x 10)
+                               (+ info-y 75)
+                               (+ new-record-size-x 20)
+                               30
+                               pr.GOLD)
+      (pr.draw-text new-record
+                    new-record-x
+                    (+ info-y 80)
+                    20
+                    pr.GOLD))
     (pr.draw-text "Press SPACE to restart level"
                   (+ info-x 15)
-                  (+ info-y 100)
+                  (+ info-y 120)
                   20
                   pr.RAYWHITE)
     (pr.draw-text "Press ESCAPE to exit game"
                   (+ info-x 15)
-                  (+ info-y 130)
+                  (+ info-y 145)
                   20
                   pr.RAYWHITE))
 
