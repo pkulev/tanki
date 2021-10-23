@@ -4,7 +4,7 @@
 
 (import [tanki.background [Background]]
         [tanki.common [*width* *height*]]
-        [tanki.obstacles [Obstacle]]
+        [tanki.obstacles [ObstaclePool]]
         [tanki.player [Player]])
 
 
@@ -59,9 +59,12 @@
                                                    (, 0.8 "2")
                                                    (, 1.2 "1")
                                                    (, 1.6 "GO")))
-          self.obstacles [(Obstacle (pr.Vector2 700 300))]
+          self.obstacles (ObstaclePool :gap (int (+ self.player.texture.height
+                                                    (/ self.player.texture.height 2))))
           self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
     (pr.set-sound-volume self.collision-sound 0.5))
+
+  (defn set-max-score [self])
 
   (defn get-max-score [self]
     10)
@@ -73,8 +76,8 @@
     (self.bg.reset)
     (self.player.reset)
     (self.prepare-countdown.reset)
-    (setv self.game-over? False
-          self.obstacles [(Obstacle (pr.Vector2 700 300))]))
+    (self.obstacles.reset)
+    (setv self.game-over? False))
 
   (defn update [self]
     (when self.game-over?
@@ -87,8 +90,7 @@
 
     (unless (or (not self.prepare-countdown.done?) self.paused?)
       (self.bg.update)
-      (for [obstacle self.obstacles]
-        (obstacle.update))
+      (self.obstacles.update)
       (self.player.update)
 
       (when (or (> (+ self.player.pos.y (* self.player.texture.height 2/3)) *height*)
@@ -97,11 +99,9 @@
 
   (defn collision-with-obstacle [self]
     ;; TODO: check only closest
-    (for [obstacle self.obstacles]
-      (when (pr.check-collision-recs self.player.collision-rect
-                                     obstacle.collision-rect)
+    (when (self.obstacles.check-collision self.player.collision-rect)
         (pr.play-sound self.collision-sound)
-        (return True))))
+        (return True)))
 
   (defn render-game-over-lay [self]
     (setv info-w 350
@@ -141,8 +141,7 @@
 
   (defn render [self]
     (self.bg.render)
-    (for [obstacle self.obstacles]
-      (obstacle.render))
+    (self.obstacles.render)
     (self.player.render)
     (self.prepare-countdown.render)
 
