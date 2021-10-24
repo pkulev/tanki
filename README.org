@@ -8,10 +8,10 @@ Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and m
 ** Development
    Requires =poetry=, raylib and python3.9+.
    #+begin_src bash
+     # clone the sources
+     git clone git@github.com:pkulev/tanki.git && cd tanki
      # install poetry 1.2.0+
      curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 - --preview
-     # install raylib
-     brew install raylib  # or via your favourite package manager
      # set venv to be in the project root
      poetry config virtualenvs.in-project true
      # create venv and install project
@@ -59,3 +59,5 @@ Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and m
 * Known bugs
 ** While holding =jump engine= button long enough sound restarts with hearable gap.
    Maybe new function in =raylib= (=SeekMusicStream=) will fix this, but I can't use it in my version.
+   This behaviour is very unlikely to show up, because obstacles are close to each other and I restart
+   jetpack sound on =jump engine= key released when it is close to end.
