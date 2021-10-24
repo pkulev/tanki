@@ -81,7 +81,7 @@
   (defn update [self]
     (+= self.pos.y self.fall-speed)
 
-    (setv self.fuel (common.clamp (+ self.fuel 0.5) 0 100))
+    (setv self.fuel (common.clamp (+ self.fuel 0.6) 0 100))
     ;; Recharched!
     (when (> self.fuel 25)
       (self.set-fuel-depleted False))
