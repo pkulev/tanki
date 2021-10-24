@@ -1,0 +1,161 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.2.0a2
+          virtualenvs-in-project: true
+
+      - name: install dependencies
+        run: poetry install
+
+      - name: install exec plugin
+        run: poetry plugin add poetry-exec-plugin
+
+      - name: remove non-linux libs (pyinstaller failes if they are exist)
+        run: |
+          rm .venv/lib/python3.9/site-packages/raylib/libraylib.dylib
+          rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
+          rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
+
+      - name: build for linux
+        run: poetry exec build-linux
+
+      # - name: make archive
+      #   run: |
+      #     pushd build/linux
+      #     tar cvfz tanki-linux.tar.gz thetanki
+      #     ls -lah tanki-linux.tar.gz
+      #     popd
+
+      - name: rename out dir
+        run: mv build/linux/thetanki build/linux/tanki-linux
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: tanki-linux-${{ github.sha }}.tar.gz
+      #     path: build/linux/tanki-linux.tar.gz
+
+      - name: upload release to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: linux
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip && chmod +x butler
+          ./butler push build/linux pkulev/tanki:${CHANNEL}
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.2.0a2
+          virtualenvs-in-project: true
+
+      - name: install dependencies
+        run: poetry install
+
+      # TODO: failed
+      # - name: install exec plugin
+      #   run: poetry plugin add poetry-exec-plugin
+
+      #   run: poetry exec build-windows
+      - name: build for windows
+        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/windows --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
+
+      # - name: make archive
+      #   run: |
+      #     pushd build/windows
+      #     tar cvfz tanki-windows.tar.gz
+      #     ls -lah tanki-windows.tar.gz
+      #     popd
+
+      - name: rename out dir
+        run: mv build/windows/thetanki build/windows/tanki-windows
+
+      - name: upload release to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: macos
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default
+          unzip butler.zip && chmod +x butler
+          ./butler push build/windows pkulev/tanki:${CHANNEL}
+
+  build-macos:
+    runs-on: macos-11
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.2.0a2
+          virtualenvs-in-project: true
+
+      - name: install dependencies
+        run: poetry install
+
+      - name: install exec plugin
+        run: poetry plugin add poetry-exec-plugin
+
+      - name: remove non-macos libs (pyinstaller failes if they are exist)
+        run: |
+          rm .venv/lib/python3.9/site-packages/raylib/libraylib.so
+          rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
+          rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
+
+      - name: build for macos
+        run: poetry exec build-macos
+
+      - name: rename out dir
+        run: mv build/macos/thetanki build/macos/tanki-macos
+
+      # - name: make archive
+      #   run: |
+      #     pushd build/macos
+      #     tar cvfz tanki-macos.tar.gz thetanki
+      #     ls -lah tanki-macos.tar.gz
+      #     popd
+
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: tanki-macos-${{ github.sha }}.tar.gz
+      #     path: build/macos/tanki-macos.tar.gz
+
+      - name: upload release to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          CHANNEL: macos
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
+          unzip butler.zip && chmod +x butler
+          ./butler push build/macos/ pkulev/tanki:${CHANNEL}
