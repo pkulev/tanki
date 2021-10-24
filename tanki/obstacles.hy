@@ -6,16 +6,22 @@
 
 (defclass Obstacle []
 
-  (defn --init-- [self pos width height]
+  (defn --init-- [self pos &optional [width 0] [height 0]]
     (setv self.pos pos
           self.speed 3
           self.width width
-          self.height height
-          self.collision-rect (pr.Rectangle pos.x pos.y self.width self.height)))
+          self.height height))
 
   #@(property
       (defn rect [self]
         (pr.Rectangle self.pos.x self.pos.y self.width self.height)))
+
+  #@(property
+      (defn collision-rect [self]
+        self.rect))
+
+  (defn randomize-size [self min-height max-height]
+    (setv self.height (random.randint min-height max-height)))
 
   (defn update [self]
     (-= self.pos.x self.speed)
@@ -32,17 +38,34 @@
   (setv texture-top "assets/gfx/obstacle-top.png")
   (setv texture-bottom "assets/gfx/obstacle-bottom.png")
 
-  (defn --init-- [self top bottom]
-    (setv self.top top
-          self.bottom bottom
-          self.checked? False))
+  (defn --init-- [self x gap min-top-height max-top-height]
+    (setv self.gap gap
+          self.min-top-height min-top-height
+          self.max-top-height max-top-height
+          self.top (Obstacle (pr.Vector2 x 0) :width 120)
+          self.bottom (Obstacle (pr.Vector2 x 0) :width 120)
+          self.checked? False)
+    (self.randomize-sizes))
 
-  (defn set-pos-x [self x]
-    (setv self.top.pos.x x
-          self.bottom.pos.x x))
+  #@(property
+      (defn x [self]
+        self.bottom.pos.x))
 
-  (defn get-pos-x [self]
-    self.bottom.pos.x)
+  #@(x.setter
+      (defn x [self new-x]
+        (setv self.top.pos.x new-x
+              self.bottom.pos.x new-x)))
+
+  (defn randomize-top [self]
+    (self.top.randomize-size self.min-top-height self.max-top-height))
+
+  (defn randomize-bottom [self]
+    (setv self.bottom.height (- common.*height* self.gap self.top.height)
+          self.bottom.pos.y (+ self.top.height self.gap)))
+
+  (defn randomize-sizes [self]
+    (self.randomize-top)
+    (self.randomize-bottom))
 
   (defn check-collision [self object-collider]
     (or (pr.check-collision-recs self.top.collision-rect object-collider)
@@ -91,34 +114,38 @@
     False)
 
   (defn generate-obstacles [self]
-    (setv objects [])
+    (setv obstacles [])
     (for [n (range self.num)]
       (setv distance-x (random.randint self.min-distance-x self.max-distance-x)
-            top-height (random.randint self.min-top-height self.max-top-height)
-            bottom-height (- common.*height* self.gap top-height))
-      (objects.append
-        (ObstaclePair
-          (Obstacle (pr.Vector2 (+ 700 (* n distance-x)) 0) 120 top-height)
-          (Obstacle (pr.Vector2 (+ 700 (* n distance-x)) (+ top-height self.gap)) 120 bottom-height))))
-    objects)
+            obstacle (ObstaclePair (+ 700 (* n distance-x)) self.gap
+                                   self.min-top-height self.max-top-height))
+      (obstacles.append obstacle))
+    obstacles)
 
   (defn find-farest-object [self]
     (setv obj None
           x -1)
     (for [object self.objects]
-      (when (> (object.get-pos-x) x)
+      (when (> object.x x)
         (setv obj object
-              x (object.get-pos-x))))
+              x object.x)))
     obj)
 
+  (defn warp-pair [self pair]
+    "Warps pair of obstacles that came out of x=0 behind x=width.
+
+     Also randomizes where gap is."
+    (setv pair.x (+ (. (self.find-farest-object) x)
+                    (random.randint self.min-distance-x self.max-distance-x)))
+    (pair.randomize-sizes))
+
   (defn update [self]
-    (for [object self.objects]
-      (object.update)
+    (for [pair self.objects]
+      (pair.update)
       ;; we really don't care top or bottom here
-      (when (< (+ (object.get-pos-x) object.bottom.width) 0)
-        (object.set-pos-x (+ ((. (self.find-farest-object) get-pos-x))
-                             (random.randint self.min-distance-x self.max-distance-x))))))
+      (when (< (+ pair.x pair.bottom.width) 0)
+        (self.warp-pair pair))))
 
   (defn render [self]
-    (for [object self.objects]
-      (object.render))))
+    (for [pair self.objects]
+      (pair.render))))

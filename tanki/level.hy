@@ -109,14 +109,14 @@
       ;; scores!
       (for [obstacle self.obstacles.objects]
         ;; player passed obstacle at 3px
-        (setv diff (- self.player.pos.x (+ (obstacle.get-pos-x) obstacle.bottom.width)))
+        (setv diff (- self.player.pos.x (+ obstacle.x obstacle.bottom.width)))
         (when (and (< diff 5)
                    (> diff 0)
                    (not obstacle.checked?))
           (+= self.score 1)
           (setv obstacle.checked? True))
 
-        (when (and (> self.player.pos.x (+ (obstacle.get-pos-x) obstacle.bottom.width 7)))
+        (when (and (> self.player.pos.x (+ obstacle.x obstacle.bottom.width 7)))
           (setv obstacle.checked? False)))))
 
   (defn collision-with-obstacle [self]
