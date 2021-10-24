@@ -23,13 +23,13 @@
     (-= self.scrolling-mid 0.5)
     (-= self.scrolling-fore 1.0)
 
-    (when (<= self.scrolling-back (- (* self.background.width 2)))
+    (when (<= self.scrolling-back (- self.background.width))
       (setv self.scrolling-back 0.0))
 
-    (when (<= self.scrolling-mid (- (* self.midround.width 2)))
+    (when (<= self.scrolling-mid (- self.midround.width))
       (setv self.scrolling-mid 0.0))
 
-    (when (<= self.scrolling-fore (- (* self.foreground.width 2)))
+    (when (<= self.scrolling-fore (- self.foreground.width))
       (setv self.scrolling-fore 0.0)))
 
   (defn render [self]
@@ -37,18 +37,18 @@
                        (pr.Vector2 self.scrolling-back -20)
                        pr.RAYWHITE)
     (pr.draw-texture-v self.background
-                       (pr.Vector2 (+ self.scrolling-back (* self.background.width 2)) 20)
+                       (pr.Vector2 (+ self.scrolling-back self.background.width) -20)
                        pr.RAYWHITE)
 
     (pr.draw-texture-v self.midround
                        (pr.Vector2 self.scrolling-mid 100)
                        pr.RAYWHITE)
     (pr.draw-texture-v self.midround
-                       (pr.Vector2 (+ self.scrolling-mid (* self.midround.width 2)) 120)
+                       (pr.Vector2 (+ self.scrolling-mid self.midround.width) 100)
                        pr.RAYWHITE)
 
     (pr.draw-texture-v self.foreground
                        (pr.Vector2 self.scrolling-fore 70)
                        pr.RAYWHITE)
-    (pr.draw-texture-v self.foreground (pr.Vector2 (+ self.scrolling-fore (* self.foreground.width 2)) 70)
+    (pr.draw-texture-v self.foreground (pr.Vector2 (+ self.scrolling-fore self.foreground.width) 70)
                        pr.RAYWHITE)))
