@@ -124,20 +124,20 @@
       (obstacles.append obstacle))
     obstacles)
 
-  (defn find-farest-object [self]
+  (defn find-farest-obstacle [self]
     (setv obj None
           x -1)
-    (for [object self.objects]
-      (when (> object.x x)
-        (setv obj object
-              x object.x)))
+    (for [obstacle self.objects]
+      (when (> obstacle.x x)
+        (setv obj obstacle
+              x obstacle.x)))
     obj)
 
   (defn warp-pair [self pair]
     "Warps pair of obstacles that came out of x=0 behind x=width.
 
      Also randomizes where gap is."
-    (setv pair.x (+ (. (self.find-farest-object) x)
+    (setv pair.x (+ (. (self.find-farest-obstacle) x)
                     (random.randint self.min-distance-x self.max-distance-x)))
     (pair.randomize-sizes))
 
