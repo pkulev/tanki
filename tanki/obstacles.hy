@@ -84,9 +84,9 @@
   (defn --init-- [self
                   &optional
                   [num 4]
-                  [initial-pos-x 700]
+                  [initial-pos-x 600]
                   ;; gap should be big enough to fit jumping player
-                  ;; for now it looks like player.width + 1/3 of player.width is ok
+                  ;; for now it looks like player.height + 1/3 of player.height is ok
                   [gap 250]
                   ;; distance between obstacles
                   [min-distance-x 400]
@@ -117,8 +117,10 @@
     (setv obstacles [])
     (for [n (range self.num)]
       (setv distance-x (random.randint self.min-distance-x self.max-distance-x)
-            obstacle (ObstaclePair (+ 700 (* n distance-x)) self.gap
-                                   self.min-top-height self.max-top-height))
+            obstacle (ObstaclePair :x (+ self.initial-pos-x (* n distance-x))
+                                   :gap self.gap
+                                   :min-top-height self.min-top-height
+                                   :max-top-height self.max-top-height))
       (obstacles.append obstacle))
     obstacles)
 
