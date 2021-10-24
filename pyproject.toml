@@ -60,7 +60,29 @@ build-macos = """\
                 --collect-all pyray \
                 tanki/__main__.py \
 """
-run = "build/macos/thetanki/thetanki"
+run-macos = "build/macos/thetanki/thetanki"
+build-linux = """\
+    pyinstaller --onedir \
+                --noconsole \
+                --noconfirm \
+                --clean \
+                --workpath .temp \
+                --distpath build/linux \
+                --name thetanki \
+                --additional-hooks-dir pyinstaller-hooks \
+                --add-data 'tanki/game.hy:tanki' \
+                --add-data 'tanki/background.hy:tanki' \
+                --add-data 'tanki/player.hy:tanki' \
+                --add-data 'tanki/level.hy:tanki' \
+                --add-data 'tanki/common.hy:tanki' \
+                --add-data 'tanki/obstacles.hy:tanki' \
+                --add-data 'tanki/ui.hy:tanki' \
+                --add-data 'assets:assets' \
+                --collect-all raylib \
+                --collect-all pyray \
+                tanki/__main__.py \
+"""
+run-linux = "build/linux/thetanki/thetanki"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
