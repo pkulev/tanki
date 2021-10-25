@@ -1,5 +1,7 @@
 #+TITLE: Tanki
 
+[[logo][file:https://github.com/pkulev/tanki/blob/main/images/logo.png]]
+
 Submission for [[https://itch.io/jam/autumn-lisp-game-jam-2021][itch.io]] Autumn Lisp Game Jam
 Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and my bad gamedev skills.
 
@@ -55,6 +57,11 @@ Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and m
     - Rain :: [[https://freesound.org/people/InspectorJ/sounds/400402/][freesound]] ([[https://creativecommons.org/licenses/by/3.0/][Attribution License]])
 
     Other sounds generated in Bfxr.
+
+* Screenshots
+
+  [[paused][file:https://github.com/pkulev/tanki/blob/main/images/screenshot1.png]]
+  [[new score][file:https://github.com/pkulev/tanki/blob/main/images/screenshot2.png]]
 
 * Known bugs
 ** While holding =jump engine= button long enough sound restarts with hearable gap.
