@@ -31,12 +31,12 @@ raylib = "3.7.0.post10"
 raylib-dynamic = "^3.7.0-post10"
 
 [tool.poetry.dev-dependencies]
-black = "^21.9b0"
 jedhy = "^1"
 HyREPL = "^0.1.1"
 Nuitka = "^0.6.17"
 pyinstaller = "^4.5.1"
-poetry-exec-plugin = "^0.3.1"
+# TODO FIXME: this failes installation
+# poetry-exec-plugin = "^0.3.2"
 
 [tool.poetry-exec-plugin.commands]
 build-macos = """\
@@ -83,6 +83,28 @@ build-linux = """\
                 tanki/__main__.py \
 """
 run-linux = "build/linux/thetanki/thetanki"
+build-windwos = """\
+    pyinstaller --onedir \
+                --noconsole \
+                --noconfirm \
+                --clean \
+                --workpath .temp \
+                --distpath build/linux \
+                --name thetanki \
+                --additional-hooks-dir pyinstaller-hooks \
+                --add-data 'tanki/game.hy;tanki' \
+                --add-data 'tanki/background.hy;tanki' \
+                --add-data 'tanki/player.hy;tanki' \
+                --add-data 'tanki/level.hy;tanki' \
+                --add-data 'tanki/common.hy;tanki' \
+                --add-data 'tanki/obstacles.hy;tanki' \
+                --add-data 'tanki/ui.hy;tanki' \
+                --add-data 'assets;assets' \
+                --collect-all raylib \
+                --collect-all pyray \
+                tanki/__main__.py \
+"""
+run-windows = "build/windows/thetanki/thetanki"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -84,8 +84,14 @@ jobs:
       #   run: poetry plugin add poetry-exec-plugin
 
       #   run: poetry exec build-windows
+
+      - name: fix DLL path
+        run: |
+          ls .venv/Lib/site-packages/raylib
+          mv .venv/lib/site-packages/raylib/raylib.dll .venv/lib/site-packages/raylib/libraylib.dll
+
       - name: build for windows
-        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/windows --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
+        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/windows --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy;tanki' --add-data 'tanki/background.hy;tanki' --add-data 'tanki/player.hy;tanki' --add-data 'tanki/level.hy;tanki' --add-data 'tanki/common.hy;tanki' --add-data 'tanki/obstacles.hy;tanki' --add-data 'tanki/ui.hy;tanki' --add-data 'assets;assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
 
       # - name: make archive
       #   run: |
@@ -100,11 +106,11 @@ jobs:
       - name: upload release to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-          CHANNEL: macos
+          CHANNEL: windows
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default
-          unzip butler.zip && chmod +x butler
-          ./butler push build/windows pkulev/tanki:${CHANNEL}
+          Expand-Archive butler.zip .
+          ./butler push build/windows pkulev/tanki:windows
 
   build-macos:
     runs-on: macos-11
