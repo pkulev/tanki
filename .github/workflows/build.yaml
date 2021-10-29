@@ -25,8 +25,8 @@ jobs:
       - name: install dependencies
         run: poetry install
 
-      - name: install exec plugin
-        run: poetry plugin add poetry-exec-plugin
+      # - name: install exec plugin
+      #   run: poetry plugin add poetry-exec-plugin
 
       - name: remove non-linux libs (pyinstaller failes if they are exist)
         run: |
@@ -34,8 +34,10 @@ jobs:
           rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
           rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
 
-      - name: build for linux
-        run: poetry exec build-linux
+      # - name: build for linux
+      #   run: poetry exec build-linux
+      - name: build for linux TODO FIXME
+        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/linux --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
 
       # - name: make archive
       #   run: |
@@ -130,8 +132,9 @@ jobs:
       - name: install dependencies
         run: poetry install
 
-      - name: install exec plugin
-        run: poetry plugin add poetry-exec-plugin
+      # TODO: fixme
+      # - name: install exec plugin
+      #   run: poetry plugin add poetry-exec-plugin
 
       - name: remove non-macos libs (pyinstaller failes if they are exist)
         run: |
@@ -139,8 +142,10 @@ jobs:
           rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
           rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
 
-      - name: build for macos
-        run: poetry exec build-macos
+      # - name: build for macos
+      #   run: poetry exec build-macos
+      - name: build for macos TODO FIXME
+        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/macos --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
 
       - name: rename out dir
         run: mv build/macos/thetanki build/macos/tanki-macos
