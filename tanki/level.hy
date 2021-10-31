@@ -64,7 +64,7 @@
           self.obstacles (ObstaclePool :gap (int (+ self.player.texture.height
                                                     (/ self.player.texture.height 2))))
           self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
-    (pr.set-sound-volume self.collision-sound 0.5))
+    (pr.set-sound-volume self.collision-sound 0.2))
 
   ;; save to file
   (defn set-max-score [self score]

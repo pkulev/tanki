@@ -60,6 +60,7 @@
                                         :font-size 20
                                         :label-color pr.VIOLET
                                         :spacing 5))
+    (pr.set-sound-volume self.fuel-depletion-sound 0.1)
     (self.reset))
 
   (defn reset [self]
