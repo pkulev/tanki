@@ -36,10 +36,10 @@
   (defn render [self]
     (unless self.done?
       (setv [_ text] (get self.frames self.current-frame)
-            size (pr.measure-text-ex (pr.get-font-default) text 36 3))
+            size-x (pr.measure-text text 36))
 
       (pr.draw-text text
-                    (int (- (/ *width* 2) (/ size.x 2)))
+                    (int (- (/ *width* 2) (/ size-x 2)))
                     (// *height* 2)
                     36
                     pr.WHITE))))

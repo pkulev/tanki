@@ -27,8 +27,6 @@
     (pr.play-music-stream self.music)
     (while (not (pr.window-should-close))
       (pr.update-music-stream self.music)
-      ;; (when (and common.*music* (not (pr.is-sound-playing self.music)))
-      ;;   (pr.play-sound self.music))
 
       (self.level.update)
 
