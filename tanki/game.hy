@@ -3,6 +3,7 @@
 (import [tanki [common]]
         [tanki.background [Background]]
         [tanki.common [*width* *height*]]
+        [tanki.controls [InputSystem]]
         [tanki.level [Level]]
         [tanki.player [Player]])
 
@@ -17,6 +18,7 @@
     (pr.set-target-fps 60)
 
     (setv self.state :in-game
+          self.input (InputSystem)
           self.level (Level (get self.level-names 0))
           self.music (pr.load-music-stream "assets/snd/theme.wav")))
 
@@ -28,6 +30,7 @@
     (while (not (pr.window-should-close))
       (pr.update-music-stream self.music)
 
+      (self.input.update)
       (self.level.update)
 
       (pr.begin-drawing)
@@ -43,16 +46,20 @@
       (pr.draw-fps 940 0)
       (when common.*debug*
         (pr.draw-line (// *width* 2) 0 (// *width* 2) *height* pr.RED)
-        (pr.draw-line 0 (// *height* 2) *width* (// *height* 2) pr.GREEN))
+        (pr.draw-line 0 (// *height* 2) *width* (// *height* 2) pr.GREEN)
+        (self.input.render))
       (pr.end-drawing)
 
       (when (pr.is-key-released pr.KEY_D)
         (setv common.*debug* (not common.*debug*)))
 
+      (when (pr.is-key-released pr.KEY_I)
+        (self.input.set-next-device))
+
       (when (pr.is-key-released pr.KEY_P)
         (self.level.toggle-pause))
 
-      (when (pr.is-key-released pr.KEY_R)
+      (when (self.input.action? ':restart ':in-game)
         (self.restart-level))
 
       (when (pr.is-key-released pr.KEY_M)
