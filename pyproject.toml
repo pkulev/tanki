@@ -27,8 +27,7 @@ python = "^3.9"
 hy = "^0.20.0"
 # hy = {version = "1.0a3", allow-prereleases = true}
 funcparserlib = {version = "1.0.0a0", allow-prereleases = true}
-raylib = "3.7.0.post10"
-raylib-dynamic = "^3.7.0-post10"
+raylib = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 jedhy = "^1"
