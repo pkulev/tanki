@@ -28,12 +28,6 @@ jobs:
       # - name: install exec plugin
       #   run: poetry plugin add poetry-exec-plugin
 
-      - name: remove non-linux libs (pyinstaller failes if they are exist)
-        run: |
-          rm .venv/lib/python3.9/site-packages/raylib/libraylib.dylib
-          rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
-          rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
-
       # - name: build for linux
       #   run: poetry exec build-linux
       - name: build for linux TODO FIXME
@@ -87,11 +81,6 @@ jobs:
 
       #   run: poetry exec build-windows
 
-      - name: fix DLL path
-        run: |
-          ls .venv/Lib/site-packages/raylib
-          mv .venv/lib/site-packages/raylib/raylib.dll .venv/lib/site-packages/raylib/libraylib.dll
-
       - name: build for windows
         run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/windows --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy;tanki' --add-data 'tanki/background.hy;tanki' --add-data 'tanki/player.hy;tanki' --add-data 'tanki/level.hy;tanki' --add-data 'tanki/common.hy;tanki' --add-data 'tanki/obstacles.hy;tanki' --add-data 'tanki/ui.hy;tanki' --add-data 'assets;assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
 
@@ -135,12 +124,6 @@ jobs:
       # TODO: fixme
       # - name: install exec plugin
       #   run: poetry plugin add poetry-exec-plugin
-
-      - name: remove non-macos libs (pyinstaller failes if they are exist)
-        run: |
-          rm .venv/lib/python3.9/site-packages/raylib/libraylib.so
-          rm .venv/lib/python3.9/site-packages/raylib/raylib.dll
-          rm -rf .venv/lib/python3.9/site-packages/raylib/32bit
 
       # - name: build for macos
       #   run: poetry exec build-macos
