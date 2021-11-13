@@ -13,6 +13,7 @@
   (setv level-names ["1" "2" "3"])
 
   (defn --init-- [self]
+    (pr.set-config-flags pr.FLAG-MSAA-4X-HINT)
     (pr.init-window *width* *height* "Tanki")
     (pr.init-audio-device)
     (pr.set-target-fps 60)
