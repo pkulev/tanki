@@ -1,10 +1,10 @@
 "Input management."
 
-(import [dataclasses [dataclass field]])
+(import dataclasses [dataclass field])
 
 (import tanki.common)
 
-(import [pyray :as pr])
+(import pyray :as pr)
 
 ;; ActionSet is mapping of some context/scheme identificator to allowed set of
 ;; actions in the terms of game. It can be created dynamically too (in future).
@@ -80,7 +80,7 @@
 
 (defclass InputSystem []
 
-  (defn --init-- [self]
+  (defn __init__ [self]
     (setv self.devices {"keyboard" (Keyboard)}
           self.device (get self.devices "keyboard")))
 

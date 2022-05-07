@@ -1,9 +1,9 @@
-(import [pyray :as pr])
+(import pyray :as pr)
 
 (defclass Background []
   "Background with parallax."
 
-  (defn --init-- [self name]
+  (defn __init__ [self name]
     (setv self.name name
           self.scrolling-back 0.0
           self.scrolling-mid 0.0

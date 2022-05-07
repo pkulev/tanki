@@ -1,12 +1,12 @@
 (import random)
 
-(import [pyray :as pr])
+(import pyray :as pr)
 
-(import [tanki [common]])
+(import tanki [common])
 
 (defclass Obstacle []
 
-  (defn --init-- [self pos &optional [width 0] [height 0]]
+  (defn __init__ [self pos [width 0] [height 0]]
     (setv self.pos pos
           self.speed 3
           self.width width
@@ -38,7 +38,7 @@
   (setv texture-top "assets/gfx/obstacle-top.png")
   (setv texture-bottom "assets/gfx/obstacle-bottom.png")
 
-  (defn --init-- [self x gap min-top-height max-top-height]
+  (defn __init__ [self x gap min-top-height max-top-height]
     (setv self.gap gap
           self.min-top-height min-top-height
           self.max-top-height max-top-height
@@ -81,8 +81,7 @@
 
 (defclass ObstaclePool []
 
-  (defn --init-- [self
-                  &optional
+  (defn __init__ [self
                   [num 4]
                   [initial-pos-x 600]
                   ;; gap should be big enough to fit jumping player

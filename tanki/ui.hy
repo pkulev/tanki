@@ -1,12 +1,15 @@
-(import [pyray :as pr])
+(import pyray :as pr)
 
-(import [tanki [common]])
+(import tanki [common])
 
 
 (defclass ProgressBar []
 
-  (defn --init-- [self x y w h bg-color fg-color val min-val max-val
-                  &optional label font-size [label-color pr.RAYWHITE] [spacing 3]]
+  (defn __init__ [self x y w h bg-color fg-color val min-val max-val
+                  [label None]
+                  [font-size None]
+                  [label-color pr.RAYWHITE]
+                  [spacing 3]]
     (when (and label (not font-size))
       (raise (ValueError "set font-size when setting label")))
 

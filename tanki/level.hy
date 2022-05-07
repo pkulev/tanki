@@ -1,17 +1,18 @@
 (import math)
+(require hyrule [unless])
 
-(import [pyray :as pr])
+(import pyray :as pr)
 
-(import [tanki.background [Background]]
-        [tanki.common [*width* *height*]]
-        [tanki.obstacles [ObstaclePool]]
-        [tanki.player [Player]])
+(import tanki.background [Background]
+        tanki.common [*width* *height*]
+        tanki.obstacles [ObstaclePool]
+        tanki.player [Player])
 
 
 (defclass TextCountdown []
   "Simple animated text."
 
-  (defn --init-- [self frames]
+  (defn __init__ [self frames]
     (setv self.frames frames
           self.current-frame 0
           self.frames-num (len frames)
@@ -46,7 +47,7 @@
 
 
 (defclass Level []
-  (defn --init-- [self name]
+  (defn __init__ [self name]
     (setv self.name name
           self.bg (Background name)
           self.player (Player (pr.Vector2 100 500))

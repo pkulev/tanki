@@ -1,11 +1,11 @@
-(import [pyray :as pr])
+(import pyray :as pr)
 
-(import [tanki [common ui]])
+(import tanki [common ui])
 
 
 (defclass JetpackSound []
 
-  (defn --init-- [self]
+  (defn __init__ [self]
     (setv self.sound (pr.load-music-stream "assets/snd/jetpack-cut.wav")
           self.length (pr.get-music-time-length self.sound))
     (pr.set-music-volume self.sound 0.1)
@@ -34,7 +34,7 @@
 
 (defclass Player []
 
-  (defn --init-- [self pos]
+  (defn __init__ [self pos]
     (setv self.pos pos
           self.-start-pos (pr.Vector2 pos.x pos.y)
 

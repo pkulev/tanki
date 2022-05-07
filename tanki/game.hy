@@ -1,22 +1,24 @@
-(import [pyray :as pr])
+(import pyray :as pr)
 
-(import [tanki [common]]
-        [tanki.background [Background]]
-        [tanki.common [*width* *height*]]
-        [tanki.controls [InputSystem]]
-        [tanki.level [Level]]
-        [tanki.player [Player]])
+(import tanki [common]
+        tanki.background [Background]
+        tanki.common [*width* *height*]
+        tanki.controls [InputSystem]
+        tanki.level [Level]
+        tanki.player [Player])
 
 
 (defclass Game []
 
   (setv level-names ["1" "2" "3"])
+  (setv states [:main-menu :in-game])
 
-  (defn --init-- [self]
+  (defn __init__ [self]
     (pr.set-config-flags pr.FLAG-MSAA-4X-HINT)
     (pr.init-window *width* *height* "Tanki")
     (pr.init-audio-device)
     (pr.set-target-fps 60)
+    (pr.set-exit-key pr.KEY_NULL)
 
     (setv self.state :in-game
           self.input (InputSystem)
