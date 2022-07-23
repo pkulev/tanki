@@ -24,9 +24,9 @@ tanki = "tanki.__main__:main"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-hy = {version = "1.0a4", allow-prereleases = true}
+hy = "^0.24.0"
 raylib = "^4.0.0"
-hyrule = "^0.1"
+hyrule = "^0.2"
 
 [tool.poetry.dev-dependencies]
 jedhy = "^1"

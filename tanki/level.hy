@@ -58,10 +58,10 @@
           self.score 0
           self.max-score 0
 
-          self.prepare-countdown (TextCountdown (, (, 0.4 "3")
-                                                   (, 0.8 "2")
-                                                   (, 1.2 "1")
-                                                   (, 1.6 "GO")))
+          self.prepare-countdown (TextCountdown #(#(0.4 "3")
+                                                  #(0.8 "2")
+                                                  #(1.2 "1")
+                                                  #(1.6 "GO")))
           self.obstacles (ObstaclePool :gap (int (+ self.player.texture.height
                                                     (/ self.player.texture.height 2))))
           self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
@@ -100,7 +100,7 @@
       (self.obstacles.update)
       (self.player.update)
 
-      (when (or (> (+ self.player.pos.y (* self.player.texture.height 2/3)) *height*)
+      (when (or (> (+ self.player.pos.y (* self.player.texture.height (/ 2 3))) *height*)
                 (self.collision-with-obstacle))
         (setv self.game-over? True)
         (when (> self.score (self.get-max-score))

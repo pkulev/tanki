@@ -56,10 +56,10 @@
       (when (pr.is-key-released pr.KEY_D)
         (setv common.*debug* (not common.*debug*)))
 
-      (when (pr.is-key-released pr.KEY_I)
+      (when (self.input.action? ':toggle-device ':in-game)
         (self.input.set-next-device))
 
-      (when (pr.is-key-released pr.KEY_P)
+      (when (self.input.action? ':toggle-pause ':in-game)
         (self.level.toggle-pause))
 
       (when (self.input.action? ':restart ':in-game)

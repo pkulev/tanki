@@ -112,9 +112,9 @@
               self.weapon-ready? True)))
 
   (defn get-fuel-consumption [self]
-    (cond [(< self.fuel 10) 1.2]
-          [(< self.fuel 70) 1.4]
-          [True 1.5]))
+    (cond (< self.fuel 10) 1.2
+          (< self.fuel 70) 1.4
+          True 1.5))
 
   (defn set-fuel-depleted [self val]
     "Updates fuel meter color to denote that engine is not working."

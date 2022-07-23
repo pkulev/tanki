@@ -9,9 +9,8 @@
 ;; ActionSet is mapping of some context/scheme identificator to allowed set of
 ;; actions in the terms of game. It can be created dynamically too (in future).
 
-#@(dataclass
-    (defclass Action []
-      (setv ^str name None)))
+(defclass [dataclass] Action []
+  (setv #^str name None))
 
 
 (setv *controls*
@@ -25,12 +24,12 @@
 
     :in-game
     {:jump 7 #_pr.GAMEPAD-BUTTON-RIGHT-FACE-LEFT
-     :restart (, 8 :button :released)
+     :restart #(8 :button :released)
      :pause "B"}}
 
    "keyboard"
    {:global
-    {:toggle-debug "D"
+    {:toggle-debug pr.KEY_D
      :toggle-music "M"}
 
     :menu
@@ -39,8 +38,9 @@
 
     :in-game
     {:jump pr.KEY_LEFT_SHIFT
-     :restart (, pr.KEY_R :key :released)
-     :toggle-pause pr.KEY_P}}})
+     :restart #( pr.KEY_R :key :released)
+     :toggle-device #( pr.KEY_I :key :released)
+     :toggle-pause #( pr.KEY_P :key :released)}}})
 
 
 (defclass Device [])
@@ -56,8 +56,8 @@
     (pr.is-key-released key))
 
   (defn key? [self key mode]
-    (cond [(= mode :released) (self.key-released? key)]
-          [True (self.key-pressed? key)])))
+    (cond (= mode :released) (self.key-released? key)
+          True (self.key-pressed? key))))
 
 
 (defclass Gamepad [Device]
@@ -74,8 +74,8 @@
     ;; (when (!= (pr.get-gamepad-button-pressed) -1)
     ;;   (print (pr.get-gamepad-button-pressed)))
     (print (pr.get-gamepad-button-pressed))
-    (cond [(= mode :released) (self.button-released? key)]
-          [True (self.button-pressed? key)])))
+    (cond (= mode :released) (self.button-released? key)
+          True (self.button-pressed? key))))
 
 
 (defclass InputSystem []

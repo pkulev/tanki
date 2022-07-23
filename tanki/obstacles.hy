@@ -12,13 +12,11 @@
           self.width width
           self.height height))
 
-  #@(property
-      (defn rect [self]
-        (pr.Rectangle self.pos.x self.pos.y self.width self.height)))
+  (defn [property] rect [self]
+    (pr.Rectangle self.pos.x self.pos.y self.width self.height))
 
-  #@(property
-      (defn collision-rect [self]
-        self.rect))
+  (defn [property] collision-rect [self]
+    self.rect)
 
   (defn randomize-size [self min-height max-height]
     (setv self.height (random.randint min-height max-height)))
@@ -47,14 +45,12 @@
           self.checked? False)
     (self.randomize-sizes))
 
-  #@(property
-      (defn x [self]
-        self.bottom.pos.x))
+  (defn [property] x [self]
+    self.bottom.pos.x)
 
-  #@(x.setter
-      (defn x [self new-x]
-        (setv self.top.pos.x new-x
-              self.bottom.pos.x new-x)))
+  (defn [x.setter] x [self new-x]
+    (setv self.top.pos.x new-x
+          self.bottom.pos.x new-x))
 
   (defn randomize-top [self]
     (self.top.randomize-size self.min-top-height self.max-top-height))

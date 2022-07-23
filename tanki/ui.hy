@@ -25,7 +25,7 @@
           self.label label
           self.font-size font-size
           self.label-color label-color
-          self.label-size-x (if label (pr.measure-text label font-size))
+          self.label-size-x (when label (pr.measure-text label font-size))
           self.spacing spacing))
 
   (defn update [self val]
