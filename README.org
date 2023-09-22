@@ -2,7 +2,8 @@
 
 [[logo][file:https://github.com/pkulev/tanki/blob/main/images/logo.png]]
 
-Submission for [[https://itch.io/jam/autumn-lisp-game-jam-2021][itch.io]] Autumn Lisp Game Jam
+Submission for [[https://itch.io/jam/autumn-lisp-game-jam-2021][itch.io]] Autumn Lisp Game Jam.
+
 Little Flappy Birds inspired game made using =hy= lisp, beautiful =raylib= and my bad gamedev skills.
 
 * Installation
