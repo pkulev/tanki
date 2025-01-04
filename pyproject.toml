@@ -1,43 +1,55 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "tanki"
 version = "0.1.0"
 description = "Dendy tanks inspired survival game."
-repository = "https://github.com/pkulev/tanki"
-authors = ["Pavel Kulyov <kulyov.pavel@gmail.com>"]
-license = "MIT"
-readme = "README.org"
+authors = [{name = "Pavel Kulyov", email = "kulyov.pavel@gmail.com"}]
+license = {text = "MIT"}
+readme = "README.rst"
+
 keywords = ["hy", "lisp", "raylib", "game"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: MIT License",
     "Topic :: Games/Entertainment :: Side-Scrolling/Arcade Games",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Lisp",
 ]
 
-include = ["assets"]
+requires-python = ">=3.10"
+dependencies = [
+    "hy==1.0.0",
+    "hyrule==0.7.0",
+    "hscp==0.1.0",
+    "raylib==4.5.0.0",
+    "raylib-dynamic==4.5.0.0",
+]
 
-[tool.poetry.scripts]
+[project.urls]
+repository = "https://github.com/pkulev/tanki"
+
+[project.scripts]
 tanki = "tanki.__main__:main"
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-hy = "^0.24.0"
-raylib = "^4.0.0"
-hyrule = "^0.2"
+[project.optional-dependencies]
+dev = [
+    "pyinstaller==6.11.1",
+    "poethepoet==0.32.0",
+]
 
-[tool.poetry.dev-dependencies]
-jedhy = "^1"
-HyREPL = "^0.1.1"
-Nuitka = "^0.6.17"
-pyinstaller = "^4.5.1"
-# TODO FIXME: this failes installation
-# poetry-exec-plugin = "^0.3.2"
+[tool.setuptools.packages.find]
+include = ["tanki", "tanki.*", "assets"]
 
-[tool.poetry-exec-plugin.commands]
-build-macos = """\
+[tool.poe.tasks.build-macos]
+help = "build the thing for macos"
+shell = """\
     pyinstaller --onedir \
                 --noconsole \
                 --noconfirm \
@@ -51,15 +63,21 @@ build-macos = """\
                 --add-data 'tanki/player.hy:tanki' \
                 --add-data 'tanki/level.hy:tanki' \
                 --add-data 'tanki/common.hy:tanki' \
+                --add-data 'tanki/controls.hy:tanki' \
                 --add-data 'tanki/obstacles.hy:tanki' \
                 --add-data 'tanki/ui.hy:tanki' \
                 --add-data 'assets:assets' \
+                --collect-all hyrule \
                 --collect-all raylib \
                 --collect-all pyray \
                 tanki/__main__.py \
 """
-run-macos = "build/macos/thetanki/thetanki"
-build-linux = """\
+
+[tool.poe.tasks.run-macos]
+cmd = "build/macos/thetanki/thetanki"
+
+[tool.poe.tasks.build-linux]
+shell = """\
     pyinstaller --onedir \
                 --noconsole \
                 --noconfirm \
@@ -73,21 +91,27 @@ build-linux = """\
                 --add-data 'tanki/player.hy:tanki' \
                 --add-data 'tanki/level.hy:tanki' \
                 --add-data 'tanki/common.hy:tanki' \
+                --add-data 'tanki/controls.hy:tanki' \
                 --add-data 'tanki/obstacles.hy:tanki' \
                 --add-data 'tanki/ui.hy:tanki' \
                 --add-data 'assets:assets' \
+                --collect-all hyrule \
                 --collect-all raylib \
                 --collect-all pyray \
                 tanki/__main__.py \
 """
-run-linux = "build/linux/thetanki/thetanki"
-build-windwos = """\
+
+[tool.poe.tasks.run-linux]
+cmd = "build/linux/thetanki/thetanki"
+
+[tool.poe.tasks.build-windows]
+shell = """\
     pyinstaller --onedir \
                 --noconsole \
                 --noconfirm \
                 --clean \
                 --workpath .temp \
-                --distpath build/linux \
+                --distpath build/windows \
                 --name thetanki \
                 --additional-hooks-dir pyinstaller-hooks \
                 --add-data 'tanki/game.hy;tanki' \
@@ -95,15 +119,15 @@ build-windwos = """\
                 --add-data 'tanki/player.hy;tanki' \
                 --add-data 'tanki/level.hy;tanki' \
                 --add-data 'tanki/common.hy;tanki' \
+                --add-data 'tanki/controls.hy:tanki' \
                 --add-data 'tanki/obstacles.hy;tanki' \
                 --add-data 'tanki/ui.hy;tanki' \
                 --add-data 'assets;assets' \
+                --collect-all hyrule \
                 --collect-all raylib \
                 --collect-all pyray \
                 tanki/__main__.py \
 """
-run-windows = "build/windows/thetanki/thetanki"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.poe.tasks.run-windows]
+cmd = "build/windows/thetanki/thetanki"

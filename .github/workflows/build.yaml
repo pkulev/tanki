@@ -104,7 +104,7 @@ jobs:
           ./butler push build/windows pkulev/tanki:windows
 
   build-macos:
-    runs-on: macos-11
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2

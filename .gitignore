@@ -1,4 +1,6 @@
-*~
+__pycache__
 *.spec
-poetry.lock
 .temp
+*.egg-info
+uv.lock
+/build
