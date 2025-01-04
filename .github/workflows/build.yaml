@@ -12,26 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
 
-      - name: install Poetry
-        uses: snok/install-poetry@v1
+      - name: astral-sh/setup-uv
+        uses: astral-sh/setup-uv@v5
         with:
-          version: 1.2.0a2
-          virtualenvs-in-project: true
+          python-version: "3.11"
 
       - name: install dependencies
-        run: poetry install
+        run: uv sync --all-extras
 
-      # - name: install exec plugin
-      #   run: poetry plugin add poetry-exec-plugin
-
-      # - name: build for linux
-      #   run: poetry exec build-linux
-      - name: build for linux TODO FIXME
-        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/linux --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
+      - name: build for linux
+        run: uv run poe build-linux
 
       # - name: make archive
       #   run: |
@@ -62,27 +53,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
 
-      - name: install Poetry
-        uses: snok/install-poetry@v1
+      - name: astral-sh/setup-uv
+        uses: astral-sh/setup-uv@v5
         with:
-          version: 1.2.0a2
-          virtualenvs-in-project: true
+          python-version: "3.11"
 
       - name: install dependencies
-        run: poetry install
-
-      # TODO: failed
-      # - name: install exec plugin
-      #   run: poetry plugin add poetry-exec-plugin
-
-      #   run: poetry exec build-windows
+        run: uv sync --all-extras
 
       - name: build for windows
-        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/windows --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy;tanki' --add-data 'tanki/background.hy;tanki' --add-data 'tanki/player.hy;tanki' --add-data 'tanki/level.hy;tanki' --add-data 'tanki/common.hy;tanki' --add-data 'tanki/obstacles.hy;tanki' --add-data 'tanki/ui.hy;tanki' --add-data 'assets;assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
+        run: uv run poe build-windows
 
       # - name: make archive
       #   run: |
@@ -108,27 +89,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
 
-      - name: install Poetry
-        uses: snok/install-poetry@v1
+      - name: astral-sh/setup-uv
+        uses: astral-sh/setup-uv@v5
         with:
-          version: 1.2.0a2
-          virtualenvs-in-project: true
+          python-version: "3.11"
 
       - name: install dependencies
-        run: poetry install
+        run: uv sync --all-extras
 
-      # TODO: fixme
-      # - name: install exec plugin
-      #   run: poetry plugin add poetry-exec-plugin
-
-      # - name: build for macos
-      #   run: poetry exec build-macos
-      - name: build for macos TODO FIXME
-        run: "poetry run pyinstaller --onedir --noconsole --noconfirm --clean --workpath .temp --distpath build/macos --name thetanki --additional-hooks-dir pyinstaller-hooks --add-data 'tanki/game.hy:tanki' --add-data 'tanki/background.hy:tanki' --add-data 'tanki/player.hy:tanki' --add-data 'tanki/level.hy:tanki' --add-data 'tanki/common.hy:tanki' --add-data 'tanki/obstacles.hy:tanki' --add-data 'tanki/ui.hy:tanki' --add-data 'assets:assets' --collect-all raylib --collect-all pyray tanki/__main__.py"
+      - name: build for macos
+        run: uv run poe build-macos
 
       - name: rename out dir
         run: mv build/macos/thetanki build/macos/tanki-macos
