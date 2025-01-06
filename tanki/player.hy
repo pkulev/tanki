@@ -1,12 +1,13 @@
 (import pyray :as pr)
 
-(import tanki [common ui])
+(import tanki [ui])
+(import tanki.common :as tc)
 
 
 (defclass JetpackSound []
 
   (defn __init__ [self]
-    (setv self.sound (pr.load-music-stream "assets/snd/jetpack-cut.wav")
+    (setv self.sound (tc.load-music-stream "jetpack-cut.wav")
           self.length (pr.get-music-time-length self.sound))
     (pr.set-music-volume self.sound 0.1)
     (pr.play-music-stream self.sound)
@@ -42,8 +43,8 @@
           self.fall-speed 4
           self.jump-speed 10
           self.weapon-cooldown 10
-          self.texture (pr.load-texture "assets/gfx/player.png")
-          self.fuel-depletion-sound (pr.load-sound "assets/snd/select.wav")
+          self.texture (tc.load-texture "player.png")
+          self.fuel-depletion-sound (tc.load-sound "select.wav")
           self.jetpack-sound (JetpackSound)
           self.collision-rect (pr.Rectangle (+ pos.x 10)
                                             (+ pos.y 10)
@@ -81,7 +82,7 @@
   (defn update [self]
     (+= self.pos.y self.fall-speed)
 
-    (setv self.fuel (common.clamp (+ self.fuel 0.55) 0 100))
+    (setv self.fuel (tc.clamp (+ self.fuel 0.55) 0 100))
     ;; Recharched!
     (when (> self.fuel 25)
       (self.set-fuel-depleted False))
@@ -127,7 +128,7 @@
     (when (> self.fuel 0)
       (self.jetpack-sound.resume)
       (-= self.pos.y self.jump-speed)
-      (setv self.fuel (common.clamp (- self.fuel (self.get-fuel-consumption)) 0 100)))
+      (setv self.fuel (tc.clamp (- self.fuel (self.get-fuel-consumption)) 0 100)))
 
     ;; TODO: add depletion sound
     (when (= self.fuel 0)
@@ -141,5 +142,5 @@
     (pr.draw-texture-ex self.texture self.pos self.rotation 1.0 pr.RAYWHITE)
     (self.fuel-bar.render)
 
-    (when common.*debug*
+    (when tc.*debug*
       (pr.draw-rectangle-lines-ex self.collision-rect 1 pr.RED))))

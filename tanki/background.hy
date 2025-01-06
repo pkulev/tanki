@@ -1,5 +1,7 @@
 (import pyray :as pr)
 
+(import tanki.common :as tc)
+
 (defclass Background []
   "Background with parallax."
 
@@ -9,9 +11,9 @@
           self.scrolling-mid 0.0
           self.scrolling-fore 0.0
 
-          self.background (pr.load-texture f"assets/gfx/background-{name}.png")
-          self.midround (pr.load-texture f"assets/gfx/midground-{name}.png")
-          self.foreground (pr.load-texture f"assets/gfx/foreground-{name}.png")))
+          self.background (tc.load-texture f"background-{name}.png")
+          self.midround (tc.load-texture f"midground-{name}.png")
+          self.foreground (tc.load-texture f"foreground-{name}.png")))
 
   (defn reset [self]
     (setv self.scrolling-back 0.0

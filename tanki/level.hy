@@ -5,6 +5,7 @@
 
 (import tanki.background [Background]
         tanki.common [*width* *height*]
+        tanki.common :as tc
         tanki.obstacles [ObstaclePool]
         tanki.player [Player])
 
@@ -64,7 +65,7 @@
                                                   #(1.6 "GO")))
           self.obstacles (ObstaclePool :gap (int (+ self.player.texture.height
                                                     (/ self.player.texture.height 2))))
-          self.collision-sound (pr.load-sound "assets/snd/take-damage.wav"))
+          self.collision-sound (tc.load-sound "take-damage.wav"))
     (pr.set-sound-volume self.collision-sound 0.2))
 
   ;; save to file

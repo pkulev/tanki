@@ -3,6 +3,7 @@
 (import tanki [common]
         tanki.background [Background]
         tanki.common [*width* *height*]
+        tanki.common :as tc
         tanki.controls [InputSystem]
         tanki.level [Level]
         tanki.player [Player])
@@ -23,7 +24,7 @@
     (setv self.state :in-game
           self.input (InputSystem)
           self.level (Level (get self.level-names 0))
-          self.music (pr.load-music-stream "assets/snd/theme.wav")))
+          self.music (tc.load-music-stream "theme.wav")))
 
   (defn restart-level [self]
     (setv self.level (Level self.level.name)))
