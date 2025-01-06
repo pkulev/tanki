@@ -10,7 +10,7 @@
 ;; actions in the terms of game. It can be created dynamically too (in future).
 
 (defclass [dataclass] Action []
-  (setv #^str name None))
+  (setv #^ str name None))
 
 
 (setv *controls*
@@ -23,7 +23,7 @@
      :back "B"}
 
     :in-game
-    {:jump 7 #_pr.GAMEPAD-BUTTON-RIGHT-FACE-LEFT
+    {:jump 7 #_ pr.GAMEPAD-BUTTON-RIGHT-FACE-LEFT
      :restart #(8 :button :released)
      :pause "B"}}
 

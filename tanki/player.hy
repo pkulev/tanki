@@ -42,8 +42,7 @@
           self.fall-speed 4
           self.jump-speed 10
           self.weapon-cooldown 10
-          self.texture (pr.load-texture "assets/gfx/player.png"
-                                        pr.WHITE)
+          self.texture (pr.load-texture "assets/gfx/player.png")
           self.fuel-depletion-sound (pr.load-sound "assets/snd/select.wav")
           self.jetpack-sound (JetpackSound)
           self.collision-rect (pr.Rectangle (+ pos.x 10)

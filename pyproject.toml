@@ -28,8 +28,7 @@ dependencies = [
     "hy==1.0.0",
     "hyrule==0.7.0",
     "hscp==0.1.0",
-    "raylib==4.5.0.0",
-    "raylib-dynamic==4.5.0.0",
+    "raylib==5.5.0.0",
 ]
 
 [project.urls]
