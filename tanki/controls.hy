@@ -16,7 +16,8 @@
 (setv *controls*
   {"gamepad"
    {:global
-    {:toggle-debug "X"}
+    {:toggle-debug 1
+     :toggle-music 2}
 
     :menu
     {:select "X"
@@ -24,13 +25,15 @@
 
     :in-game
     {:jump 7 #_ pr.GAMEPAD-BUTTON-RIGHT-FACE-LEFT
-     :restart #(8 :button :released)
-     :pause "B"}}
+     :restart 8
+     :toggle-pause 9
+     :toggle-device 10
+     :fire 11}}
 
    "keyboard"
    {:global
     {:toggle-debug pr.KEY_D
-     :toggle-music "M"}
+     :toggle-music pr.KEY_M}
 
     :menu
     {:select "LMB"
@@ -38,9 +41,10 @@
 
     :in-game
     {:jump pr.KEY_LEFT_SHIFT
-     :restart #( pr.KEY_R :key :released)
-     :toggle-device #( pr.KEY_I :key :released)
-     :toggle-pause #( pr.KEY_P :key :released)}}})
+     :restart pr.KEY_R
+     :toggle-device pr.KEY_I
+     :toggle-pause pr.KEY_P
+     :fire pr.KEY_SPACE}}})
 
 
 (defclass Device [])
@@ -55,9 +59,10 @@
   (defn key-released? [self key]
     (pr.is-key-released key))
 
-  (defn key? [self key mode]
-    (cond (= mode :released) (self.key-released? key)
-          True (self.key-pressed? key))))
+  (defn key? [self key [mode :released]]
+    (match mode
+           :released (self.key-released? key)
+           :pressed (self.key-pressed? key))))
 
 
 (defclass Gamepad [Device]
@@ -65,17 +70,18 @@
   (setv name "gamepad")
 
   (defn button-pressed? [self button]
-    (pr.is-gamepad-button-pressed 0 button))
+    (pr.is-gamepad-button-down 0 button)) ;; FIXME: !!! DOWN != PRESSED (just-pressed mb)
 
   (defn button-released? [self button]
     (pr.is-gamepad-button-released 0 button))
 
-  (defn key? [self key mode]
+  (defn key? [self key [mode :released]]
     ;; (when (!= (pr.get-gamepad-button-pressed) -1)
     ;;   (print (pr.get-gamepad-button-pressed)))
     (print (pr.get-gamepad-button-pressed))
-    (cond (= mode :released) (self.button-released? key)
-          True (self.button-pressed? key))))
+    (match mode
+           :released (self.button-released? key)
+           :pressed (self.button-pressed? key))))
 
 
 (defclass InputSystem []
@@ -119,6 +125,15 @@
       (pr.draw-text f"Device: {self.device}" 5 30 20 pr.RAYWHITE)
       (pr.draw-text f"Devices: {self.devices}" 5 60 20 pr.RAYWHITE)))
 
-  (defn action? [self action context]
-    (setv [control atype key-type] (get *controls* self.device.name context action))
+  (defn action? [self action context [mode :released]]
+    (setv the-control (get *controls* self.device.name context action))
+
+    (when (is the-control None)
+      (print "oh no I don't know such action")
+      (return False))
+
+    (if (isinstance the-control tuple)
+        (setv [control atype key-type] the-control)
+        (setv [control atype key-type] [the-control :key mode]))
+
     (self.device.key? control key-type)))
