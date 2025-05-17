@@ -35,8 +35,9 @@
 
 (defclass Player []
 
-  (defn __init__ [self pos]
-    (setv self.pos pos
+  (defn __init__ [self level pos]
+    (setv self.level level
+          self.pos pos
           self.-start-pos (pr.Vector2 pos.x pos.y)
 
           self.rotation 0
@@ -87,13 +88,13 @@
     (when (> self.fuel 25)
       (self.set-fuel-depleted False))
 
-    (when (pr.is-key-down pr.KEY_SPACE)
+    (when (self.level.app.input.action? ':fire ':in-game)
       (self.fire))
 
-    (when (pr.is-key-down pr.KEY_LEFT_SHIFT)
+    (when (self.level.app.input.action? ':jump ':in-game :mode ':pressed)
       (self.jump))
 
-    (when (pr.is-key-released pr.KEY_LEFT_SHIFT)
+    (when (self.level.app.input.action? ':jump ':in-game :mode ':released)
       (self.jetpack-sound.pause))
 
     (self.fuel-bar.update self.fuel)

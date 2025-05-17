@@ -48,10 +48,11 @@
 
 
 (defclass Level []
-  (defn __init__ [self name]
-    (setv self.name name
+  (defn __init__ [self app name]
+    (setv self.app app
+          self.name name
           self.bg (Background name)
-          self.player (Player (pr.Vector2 100 500))
+          self.player (Player self (pr.Vector2 100 500))
           self.paused? False
           self.game-over? False
           self.new-record? False

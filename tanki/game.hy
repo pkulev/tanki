@@ -23,7 +23,7 @@
 
     (setv self.state :in-game
           self.input (InputSystem)
-          self.level (Level (get self.level-names 0))
+          self.level (Level self (get self.level-names 0))
           self.music (tc.load-music-stream "theme.wav")))
 
   (defn run [self]
@@ -51,7 +51,7 @@
         (self.input.render))
       (pr.end-drawing)
 
-      (when (pr.is-key-released pr.KEY_D)
+      (when (self.input.action? ':toggle-debug ':global)
         (setv common.*debug* (not common.*debug*)))
 
       (when (self.input.action? ':toggle-device ':in-game)
@@ -63,7 +63,7 @@
       (when (self.input.action? ':restart ':in-game)
         (self.level.restart))
 
-      (when (pr.is-key-released pr.KEY_M)
+      (when (self.input.action? ':toggle-music ':global)
         (setv common.*music* (not common.*music*))
         (if common.*music*
             (pr.play-music-stream self.music)
