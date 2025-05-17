@@ -26,9 +26,6 @@
           self.level (Level (get self.level-names 0))
           self.music (tc.load-music-stream "theme.wav")))
 
-  (defn restart-level [self]
-    (setv self.level (Level self.level.name)))
-
   (defn run [self]
     (pr.play-music-stream self.music)
     (while (not (pr.window-should-close))
@@ -64,7 +61,7 @@
         (self.level.toggle-pause))
 
       (when (self.input.action? ':restart ':in-game)
-        (self.restart-level))
+        (self.level.restart))
 
       (when (pr.is-key-released pr.KEY_M)
         (setv common.*music* (not common.*music*))
