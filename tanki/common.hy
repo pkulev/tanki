@@ -23,3 +23,7 @@
 
 (defn load-music-stream [#* parts]
   (pr.load-music-stream (str (res "snd" #* parts))))
+
+(defn load-shader [[vertex None] [fragment None]]
+  (pr.load-shader (if vertex (str (res "shader" vertex)) "0")
+                  (if fragment (str (res "shader" fragment)) "0")))
